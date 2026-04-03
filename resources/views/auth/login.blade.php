@@ -19,19 +19,27 @@
 
 </head>
 
-<body class="text-white">
+<body class="">
     <header class="mb-35">
-        <a href="{{ route('show.login') }}" ><h1>Login</h1></a>
     </header>
     <div class="text-center text-white ">
         <div class="header-text text-5xl font-light">
-            <h1>Welcome to MoodGauge</h1>
+            <h1>Login</h1>
         </div>
+        <form action="{{ route('login') }}" method="POST">
+            @csrf
 
-        <div class="signup-div mt-20 text-2xl">
-            <h2 class="font-semibold">Create an account to start your Journey</h2>
-            <a href="{{ route('show.register') }}">signup</a>
-        </div>
+            <label for="email">Email:</label>
+            <input type="email" name="email" required value="{{ old('email') }}">
+
+
+            <label for="password">Password:</label>
+            <input type="password" name="password" required>
+
+
+            <button type="submit" class="btn mt-4">Log in</button>
+
+        </form>
     </div>
 </body>
 
