@@ -19,7 +19,7 @@
 
 </head>
 
-<body class="">
+<body class="smythe-regular">
     <header class="mb-35">
     </header>
     <div class="text-center text-white ">
@@ -27,25 +27,30 @@
             <h1>Login</h1>
         </div>
         <form action="{{ route('login') }}" method="POST">
-            @csrf
+            <div class="form-container flex flex-col w-5/6 mx-auto mt-10">
 
-            <label for="email">Email:</label>
-            <input type="email" name="email" required value="{{ old('email') }}">
+                @csrf
+                <div class="">
+                    <label for="email">Email:</label>
+                    <input type="email" name="email" required value="{{ old('email') }}">
+                </div>
 
+                <div class="">
+                    <label for="password">Password:</label>
+                    <input type="password" name="password" required>
+                </div>
 
-            <label for="password">Password:</label>
-            <input type="password" name="password" required>
+                <button type="submit" class="btn mt-4">Log in</button>
+                {{-- Validation Errors --}}
+                @if ($errors->any())
+                    <ul class="px-4 py-2 bg-red-100">
+                        @foreach ($errors->all() as $error)
+                            <li class="my-2 text-red-500">{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                @endif
+            </div>
 
-
-            <button type="submit" class="btn mt-4">Log in</button>
-            {{-- Validation Errors --}}
-            @if ($errors->any())
-                <ul class="px-4 py-2 bg-red-100">
-                    @foreach ($errors->all() as $error)
-                        <li class="my-2 text-red-500">{{ $error }}</li>
-                    @endforeach
-                </ul>
-            @endif
         </form>
     </div>
 </body>
