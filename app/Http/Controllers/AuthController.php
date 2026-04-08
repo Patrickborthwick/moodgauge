@@ -34,7 +34,7 @@ class AuthController extends Controller
         Auth::login($user);
 
 
-        return redirect()->route('show.welcome');
+        return redirect()->route('mood.index');
     }
 
     public function login(Request $request)
@@ -47,7 +47,7 @@ class AuthController extends Controller
         if (Auth::attempt($validated)) {
             $request->session()->regenerate();
 
-            return redirect()->route('show.welcome'); //change this to new index page
+            return redirect()->route('mood.index');
         }
 
         throw ValidationException::withMessages([

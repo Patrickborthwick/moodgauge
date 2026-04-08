@@ -19,7 +19,7 @@
 
 </head>
 
-<body class="smythe-regular">
+<body class="">
     <header class="mb-35">
     </header>
     <div class="text-center text-white ">
