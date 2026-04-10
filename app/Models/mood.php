@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class mood extends Model
+class Mood extends Model
 {
 
     protected $fillable = ['mood_label', 'mood_label_colour', 'mood_icon'];
@@ -13,4 +13,8 @@ class mood extends Model
 
     /** @use HasFactory<\Database\Factories\MoodFactory> */
     use HasFactory;
+
+    public function CalendarDays(){
+        return $this->hasMany(CalendarDay::class);
+    }
 }

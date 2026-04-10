@@ -2,11 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Models\mood;
+use App\Models\Mood;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<mood>
+ * @extends Factory<Mood>
  */
 class MoodFactory extends Factory
 {

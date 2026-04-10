@@ -2,11 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Models\calendar_day;
+use App\Models\CalendarDay;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<calendar_day>
+ * @extends Factory<CalendarDay>
  */
 class CalendarDayFactory extends Factory
 {
