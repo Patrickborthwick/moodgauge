@@ -2,11 +2,10 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MoodController;
+use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 
 Route::get('/register', [AuthController::class, 'showRegister'])->name('show.register');
@@ -19,5 +18,9 @@ Route::get('/index', [MoodController::class, 'index'])->name('mood.index');
 
 
 Route::get('/', function () {
-    return view('welcome');
+    if (Auth::check()) {
+        return redirect()->route('mood.index');
+    } else {
+        return view('welcome');
+    }
 })->name('show.welcome');
