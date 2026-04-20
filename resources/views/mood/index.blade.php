@@ -54,19 +54,71 @@
                     $entry = $calendarDays[$dateKey] ?? null;
                     $mood = $entry?->mood;
                     $isToday = $dateKey === $todayKey;
+                    $icon = $mood ? Storage::url($mood->mood_icon) : Storage::url('moods/emptyDay.png');
+                    $alt = $mood ? $mood->mood_label : 'empty day';
+                    $isFuture = Carbon::parse($dateKey)->isFuture();
                 @endphp
 
-                <div
-                    class="relative aspect-square flex flex-col items-center justify-center rounded-lg border text-sm{{ $isToday ? 'border-blue-400' : 'border-gray-100' }} {{ $mood ? 'bg-white' : 'bg-gray-50' }}">
-
-                    <span class="absolute top-1 left-2 text-xs text-gray-400">{{ $day }}</span>
-
-                    @if ($mood)
-                        <img src="{{ Storage::url($mood->mood_icon) }}" alt="{{ $mood->mood_label }}">
-                    @endif
-                </div>
+                <div class="calendar-day">
+                    @if (!$isFuture)
+                        <div class="calendar-day cursor-pointer day-image rounded-full overflow-hidden {{ $isFuture ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer' }} {{ $isToday ? 'ring-colour' : '' }}"
+                            onclick="openModal('{{ $dateKey }}', '{{ Carbon::parse($dateKey)->format('d F Y') }}')">
+                            <img class="" src="{{ $icon }}" alt="{{ $alt }}">
+                    @else
+                            <div class="calendar-day opacity-40 cursor-not-allowed">
+                                <img class="" src="{{ $icon }}" alt="{{ $alt }}">
+                        @endif
+                        </div>
+                        <p class="text-center text-xs text-gray-400">{{ $day }}</p>
+                    </div>
             @endfor
 
+            </div>
         </div>
-    </div>
+        {{-- Modal backdrop --}}
+        <div id="mood-modal" class="flex hidden fixed inset-0 bg-black/60 z-50  items-center justify-center">
+            <div class="border-colour-gradient p-6 w-80 relative">
+
+                <button onclick="closeModal()" class="absolute top-3 right-4 text-gray-400 text-xl">&times;</button>
+
+                <h2 class="text-white text-center font-semibold mb-4" id="modal-date-label"></h2>
+
+                <form action="{{ route('mood.store') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="calendar_day_date" id="modal-date-input">
+
+                    <div class="grid grid-cols-5 gap-3 mb-6">
+                        @foreach ($moods as $mood)
+                            <label class="flex flex-col items-center cursor-pointer">
+                                <input type="radio" name="mood_id" value="{{ $mood->id }}" class="hidden peer">
+                                <img src="{{ Storage::url($mood->mood_icon) }}" alt="{{ $mood->mood_label }}"
+                                    class="w-12 h-12 rounded-full peer-checked:ring-2 peer-checked:ring-blue-400">
+                            </label>
+                        @endforeach
+                    </div>
+
+                    <button type="submit" class="w-full py-2 rounded-full text-white font-semibold ring-rainbow">
+                        Save
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div class="footer w-full h-15 border-footer flex items-center justify-center absolute inset-x-0 bottom-0">
+            <button onclick="openModal('{{ now()->format('Y-m-d') }}', 'Today')"
+                class="flex items-center justify-center w-25 h-25 -translate-y-6 rounded-full bottom-10 text-white text-3xl border-colour">
+                <img src="{{ Storage::url("moods/emptyDay.png") }}" alt="add todays mood">
+            </button>
+        </div>
+
 </x-layout>
+<script>
+    function openModal(date, label) {
+        document.getElementById('modal-date-input').value = date;
+        document.getElementById('modal-date-label').textContent = label;
+        document.getElementById('mood-modal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+        document.getElementById('mood-modal').classList.add('hidden');
+    }
+</script>

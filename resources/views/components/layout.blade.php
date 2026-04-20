@@ -40,11 +40,11 @@
                                 aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
                                 <span class="text-xl pr-2 font-semibold text-white"> {{ Auth::user()->name }}</span>
                             </button></span>
-                        <div class="hidden dropdown-menu ">
-                            <div class="absolute right-0 w-56 mt-2 origin-top-right rounded border border_color sidemenu_color  "
+                        <div class="hidden dropdown-menu">
+                            <div class="absolute right-0 w-56 mt-2 origin-top-right  border-colour-gradient"
                                 aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
 
-                                <div class="py-2 border-t border_color">
+                                <div class="py-5 ">
                                     <form action="{{ route('logout') }}" method="POST" class="m-0">@csrf
                                         <form>
                                             <button

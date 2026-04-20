@@ -15,6 +15,7 @@ Route::post('/login', [AuthController::class, 'Login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/index', [MoodController::class, 'index'])->name('mood.index');
+Route::post('/index', [MoodController::class, 'store'])->name('mood.store');
 
 
 Route::get('/', function () {
