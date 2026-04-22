@@ -75,7 +75,7 @@ $todayKey = now()->format('Y-m-d');
 
             </div>
     </div>
-    
+
     <div id="mood-modal" class="flex hidden fixed inset-0 bg-black/60 z-50  items-center justify-center">
         <div class="border-colour-gradient p-6 w-80 relative">
 
