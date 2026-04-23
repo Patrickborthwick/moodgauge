@@ -6,8 +6,8 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
 .smythe-regular {
@@ -27,33 +27,42 @@
 
 
 body {
-    background: #000000;
-    background: linear-gradient(90deg,rgba(0, 0, 0, 1) 10%, rgba(2, 80, 2, 1) 68%);
-    font-family: "Zain", sans-serif;
-    padding: 0;
-    margin:0 ;
+  background: #000000;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 1) 10%, rgba(2, 80, 2, 1) 68%);
+  font-family: "Zain", sans-serif;
+  padding: 0;
+  margin: 0;
 }
 
 .border-colour-gradient {
   background: linear-gradient(#2c2c2c, #2c2c2c) padding-box,
-  linear-gradient(to right, #85ff00, #0cc0df, #ff751f, #ff3131) border-box;
+    linear-gradient(to right, #85ff00, #0cc0df, #ff751f, #ff3131) border-box;
   border-radius: 25px;
   border: 3px solid transparent;
 }
 
 .border-colour {
-    background: linear-gradient(#2c2c2c, #2c2c2c) padding-box,
-  linear-gradient(to right, #85ff00, #0cc0df, #ff751f, #ff3131) border-box;
-    border: 3px solid transparent;
+  background: linear-gradient(#2c2c2c, #2c2c2c) padding-box,
+    linear-gradient(to right, #85ff00, #0cc0df, #ff751f, #ff3131) border-box;
+  border: 3px solid transparent;
 }
 
 .border-footer {
   background: linear-gradient(#2c2c2c, #2c2c2c) padding-box,
-  linear-gradient(to right, #85ff00, #0cc0df, #ff751f, #ff3131) border-box;
-    border-top: 3px solid transparent;
+    linear-gradient(to right, #85ff00, #0cc0df, #ff751f, #ff3131) border-box;
+  border-top: 3px solid transparent;
 }
 
 .ring-colour {
-    background: linear-gradient(to right, #85ff00, #0cc0df, #ff751f, #ff3131);
-    padding: 2px;
+  background: linear-gradient(to right, #85ff00, #0cc0df, #ff751f, #ff3131);
+  padding: 2px;
+}
+
+.login-input {
+  margin-bottom: 5%;
+  border-radius: 5px;
+  padding: 2%;
+  background: linear-gradient(90deg, #312222 10%, #203807 68%) padding-box,
+    linear-gradient(to right, #3b650d, #0cc0df, #ff751f, #ff3131) border-box;
+  border: 1px solid transparent;
 }

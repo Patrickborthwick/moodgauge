@@ -27,28 +27,32 @@
             <h1>Login</h1>
         </div>
         <form action="{{ route('login') }}" method="POST">
-            <div class="form-container flex flex-col w-5/6 mx-auto mt-10">
+            <div class="form-container border-colour-gradient p-10 flex flex-col w-5/6 mx-auto mt-10">
 
                 @csrf
-                <div class="">
-                    <label for="email">Email:</label>
-                    <input type="email" name="email" required value="{{ old('email') }}">
-                </div>
 
-                <div class="">
-                    <label for="password">Password:</label>
-                    <input type="password" name="password" required>
-                </div>
+                <label for="email">Email:</label>
+                <input class="login-input" type="email" name="email" required value="{{ old('email') }}">
 
-                <button type="submit" class="btn mt-4">Log in</button>
+                <label for="password">Password:</label>
+                <input class="login-input" type="password" name="password" required>
+
+                <button type="submit" class="btn mt-4 border-colour-gradient">Log in</button>
                 {{-- Validation Errors --}}
                 @if ($errors->any())
-                    <ul class="px-4 py-2 bg-red-100">
-                        @foreach ($errors->all() as $error)
-                            <li class="my-2 text-red-500">{{ $error }}</li>
-                        @endforeach
-                    </ul>
+                <ul class="px-4 py-2">
+                    @foreach ($errors->all() as $error)
+                    <li class="my-3 p-2 bg-red-500">{{ $error }}</li>
+                    @endforeach
+                </ul>
                 @endif
+
+                <a href="{{ route('show.register') }}">
+                    <div class="my-5">
+                        <p>Dont have an account? Sign up here</p>
+                    </div>
+                </a>
+
             </div>
 
         </form>
