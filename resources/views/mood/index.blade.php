@@ -103,7 +103,7 @@ $todayKey = now()->format('Y-m-d');
             </form>
         </div>
     </div>
-    <div class="footer w-full h-15 border-footer fixed flex items-center justify-center absolute inset-x-0 bottom-0">
+    <div class="footer w-full h-15 border-footer fixed flex items-center justify-center inset-x-0 bottom-0">
         <button onclick="openModal('{{ now()->format('Y-m-d') }}', 'Today')"
             class="flex items-center justify-center w-25 h-25 -translate-y-6 rounded-full bottom-10 text-white text-3xl border-colour">
             <img src="{{ Storage::url("moods/emptyDay.png") }}" alt="add todays mood">
