@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\CalendarDay;
+use App\Models\CompletedTask;
+use App\Models\EnabledTask;
 use App\Models\Mood;
+use App\Models\Task;
 use App\Services\AiSummaryService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +18,6 @@ class MoodController extends Controller
     {
         $month = (int) $request->get('month', now()->month);
         $year  = (int) $request->get('year',  now()->year);
-
         $moods = Mood::all();
 
         if ($month < 1) {
@@ -39,14 +41,20 @@ class MoodController extends Controller
             ->where('calendar_day_date', now()->format('Y-m-d'))
             ->first();
 
+        $enabledTasks = EnabledTask::with('task')
+            ->where('user_id', Auth::id())
+            ->get();
+
         return view('mood.index', [
             'calendarDays' => $calendarDays,
             'month'        => $month,
             'year'         => $year,
             'moods'        => $moods,
             'todayEntry'   => $todayEntry,
+            'enabledTasks' => $enabledTasks,
         ]);
     }
+
 
     public function store(Request $request)
     {
@@ -72,7 +80,6 @@ class MoodController extends Controller
             'mood' => $todayMood->mood_label,
         ]);
 
-
         $lastEntry = CalendarDay::where('user_id', Auth::id())
             ->whereNotNull('calendar_day_ai_summary_text')
             ->orderBy('calendar_day_date', 'desc')
@@ -80,15 +87,31 @@ class MoodController extends Controller
 
         $lastSummary = $lastEntry?->calendar_day_ai_summary_text;
 
-        $summary = (new AiSummaryService)->generateSummary($recentMoods, $lastSummary);
+        $completedTaskNames = [];
+        if ($request->has('completed_tasks')) {
+            $completedTaskNames = Task::whereIn('id', $request->completed_tasks)
+                ->pluck('task_name')
+                ->toArray();
+        }
 
+        $summary = (new AiSummaryService)->generateSummary($recentMoods, $lastSummary, $completedTaskNames);
 
-        CalendarDay::create([
+        $calendarDay = CalendarDay::create([
             'user_id'                      => Auth::id(),
             'mood_id'                      => $request->mood_id,
             'calendar_day_date'            => $request->calendar_day_date,
             'calendar_day_ai_summary_text' => $summary,
         ]);
+
+        // Save completed tasks
+        if ($request->has('completed_tasks')) {
+            foreach ($request->completed_tasks as $taskId) {
+                CompletedTask::create([
+                    'task_id'         => $taskId,
+                    'calendar_day_id' => $calendarDay->id,
+                ]);
+            }
+        }
 
         return redirect()->route('mood.index');
     }
@@ -96,8 +119,7 @@ class MoodController extends Controller
     public function show(Request $request)
     {
         $date = $request->get('date');
-
-        $entry = CalendarDay::with('mood')
+        $entry = CalendarDay::with('mood', 'completedTasks.task')
             ->where('user_id', Auth::id())
             ->where('calendar_day_date', $date)
             ->firstOrFail();

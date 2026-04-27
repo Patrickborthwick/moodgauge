@@ -23,4 +23,8 @@ class CalendarDay extends Model
     {
         return $this->belongsTo(Mood::class);
     }
+    public function completedTasks()
+    {
+        return $this->hasMany(CompletedTask::class);
+    }
 }

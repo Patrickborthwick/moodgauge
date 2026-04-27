@@ -82,7 +82,7 @@
 
         </div>
     </div>
-    <div class=" border-colour-gradient p-5 m-5 mb-40">
+    <div class=" border-colour-gradient p-5 m-5 ">
 
         @if ($todayEntry)
             <div class="flex items-center gap-2 mb-1">
@@ -97,11 +97,11 @@
         @endif
     </div>
 
-
-
-
-
-
+    <a href="{{ route('tasks.index') }}">
+        <div class="border-colour-gradient p-4 m-5 mb-40 text-white text-center text-sm">
+            <p>Manage Daily Tasks</p>
+        </div>
+    </a>
 
     <div id="mood-modal" class="flex hidden fixed inset-0 bg-black/60 z-50  items-center justify-center">
         <div class="border-colour-gradient p-6 w-80 relative">
@@ -123,21 +123,25 @@
                         </label>
                     @endforeach
                 </div>
-
+                @if ($enabledTasks->count() > 0)
+                    <div class="mb-4">
+                        <p class="text-gray-400 text-xs uppercase tracking-widest mb-3">Today's Tasks</p>
+                        @foreach ($enabledTasks as $enabledTask)
+                            <label class="flex items-center gap-3 mb-2 cursor-pointer">
+                                <input type="checkbox" name="completed_tasks[]" value="{{ $enabledTask->task_id }}"
+                                    class="w-4 h-4 accent-green-500">
+                                <span class="text-white text-sm">{{ $enabledTask->task->task_name }}</span>
+                            </label>
+                        @endforeach
+                    </div>
+                @endif
                 <button type="submit" class="w-full py-2 rounded-full text-white font-semibold ring-rainbow">
                     Save
                 </button>
             </form>
+
         </div>
     </div>
-
-
-
-
-
-
-
-
 
     <div class="footer w-full h-15 border-footer fixed flex items-center justify-center inset-x-0 bottom-0">
         <button onclick="openModal('{{ now()->format('Y-m-d') }}', 'Today')"

@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EnabledTaskController;
 use App\Http\Controllers\MoodController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -13,11 +15,17 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('show.login');
 Route::post('/register', [AuthController::class, 'Register'])->name('register');
 Route::post('/login', [AuthController::class, 'Login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
 Route::middleware('auth')->group(function () {
     Route::get('/index', [MoodController::class, 'index'])->name('mood.index');
     Route::post('/index', [MoodController::class, 'store'])->name('mood.store');
     Route::get('/mood/show', [MoodController::class, 'show'])->name('mood.show');
+
+    Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index');
+    Route::post('/tasks/toggle', [EnabledTaskController::class, 'store'])->name('tasks.toggle');
 });
+
+
 Route::get('/', function () {
     if (Auth::check()) {
         return redirect()->route('mood.index');
