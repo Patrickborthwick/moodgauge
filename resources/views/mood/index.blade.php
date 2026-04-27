@@ -82,7 +82,7 @@
 
         </div>
     </div>
-    <div class=" border-colour-gradient p-5 m-5 mb-15">
+    <div class=" border-colour-gradient p-5 m-5 mb-40">
 
         @if ($todayEntry)
             <div class="flex items-center gap-2 mb-1">
