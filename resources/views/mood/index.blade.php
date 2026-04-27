@@ -82,22 +82,20 @@
 
         </div>
     </div>
+    <div class=" border-colour-gradient p-5 m-5 mb-15">
 
-    @if ($todayEntry)
-        <div class=" border-colour-gradient p-5 m-5">
+        @if ($todayEntry)
             <div class="flex items-center gap-2 mb-1">
                 <img src="{{ Storage::url($todayEntry->mood->mood_icon) }}" alt="{{ $todayEntry->mood->mood_label }}"
                     class="w-5 h-5 rounded-full">
                 <p class="text-xs text-gray-400">Today's reflection</p>
             </div>
             <p class="text-white text-sm leading-relaxed">{{ $todayEntry->calendar_day_ai_summary_text }}</p>
-        </div>
-    @else
-        <div class=" border-colour-gradient p-5 m-5">
+        @else
             <p class="text-gray-400 text-sm text-center">Log today's mood to get your daily reflection</p>
-        </div>
-    @endif
 
+        @endif
+    </div>
 
 
 

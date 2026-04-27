@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->date('calendar_day_date');
-            $table->string('calendar_day_ai_summary_text');
+            $table->text('calendar_day_ai_summary_text');
             $table->foreignID('user_id')->constrained()->onDelete('cascade');
             $table->foreignID('mood_id')->constrained()->onDelete('cascade');
         });
