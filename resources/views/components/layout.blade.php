@@ -29,30 +29,30 @@
         <nav aria-label="Global" class=" mx-auto flex nav items-center justify-between pr-4 pb-2  ">
             <div class=" flex flex-1 justify-end">
                 @guest
-                <a href="{{ route('show.login') }}" class="text-xl px-2 font-semibold text-white">Log in</a>
-                <a href="{{ route('show.register') }}" class="text-xl px-2 font-semibold text-white">Register</a>
+                    <a href="{{ route('show.login') }}" class="text-xl px-2 font-semibold text-white">Log in</a>
+                    <a href="{{ route('show.register') }}" class="text-xl px-2 font-semibold text-white">Register</a>
                 @endguest
                 @auth
-                {{-- dropdown --}}
-                <div class=" mt-2 relative inline-block text-left dropdown">
-                    <span class="rounded-md shadow-sm"><button
-                            class=" cursor-pointer leading-5 transition duration-150 ease-in-out " type="button"
-                            aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
-                            <span class="text-xl pr-2 font-semibold text-white">Welcome {{ucfirst(Auth::user()->name) }}</span>
-                        </button></span>
-                    <div class="hidden dropdown-menu">
-                        <div class="absolute right-0 w-56 mt-2 origin-top-right  border-colour-gradient"
-                            aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
+                    {{-- dropdown --}}
+                    <div class=" mt-2 relative inline-block text-left dropdown">
+                        <span class="rounded-md shadow-sm"><button
+                                class=" cursor-pointer leading-5 transition duration-150 ease-in-out " type="button"
+                                aria-haspopup="true" aria-expanded="true" aria-controls="headlessui-menu-items-117">
+                                <span class="text-xl pr-2 font-semibold text-white">Welcome
+                                    {{ucfirst(Auth::user()->name) }}</span>
+                            </button></span>
+                        <div class="hidden dropdown-menu">
+                            <div class="absolute right-0 w-56 mt-2 origin-top-right  border-colour-gradient"
+                                aria-labelledby="headlessui-menu-button-1" id="headlessui-menu-items-117" role="menu">
 
-                            <div class="py-5 ">
-                                <form action="{{ route('logout') }}" method="POST" class="m-0">@csrf
-                                    <button
-                                        class="text-xl px-2 cursor-pointer font-semibold text-white">Logout</button>
-                                </form>
+                                <div class="py-5 ">
+                                    <form action="{{ route('logout') }}" method="POST" class="m-0">@csrf
+                                        <button class="text-xl px-2 cursor-pointer font-semibold text-white">Logout</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
                 @endauth
 
             </div>

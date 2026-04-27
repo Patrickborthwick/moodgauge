@@ -13,11 +13,11 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('show.login');
 Route::post('/register', [AuthController::class, 'Register'])->name('register');
 Route::post('/login', [AuthController::class, 'Login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
-Route::get('/index', [MoodController::class, 'index'])->name('mood.index');
-Route::post('/index', [MoodController::class, 'store'])->name('mood.store');
-
-
+Route::middleware('auth')->group(function () {
+    Route::get('/index', [MoodController::class, 'index'])->name('mood.index');
+    Route::post('/index', [MoodController::class, 'store'])->name('mood.store');
+    Route::get('/mood/show', [MoodController::class, 'show'])->name('mood.show');
+});
 Route::get('/', function () {
     if (Auth::check()) {
         return redirect()->route('mood.index');

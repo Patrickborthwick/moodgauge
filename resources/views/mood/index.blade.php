@@ -1,15 +1,15 @@
 @php
-use Carbon\Carbon;
+    use Carbon\Carbon;
 
-$prevMonth = $month === 1 ? 12 : $month - 1;
-$prevYear = $month === 1 ? $year - 1 : $year;
-$nextMonth = $month === 12 ? 1 : $month + 1;
-$nextYear = $month === 12 ? $year + 1 : $year;
+    $prevMonth = $month === 1 ? 12 : $month - 1;
+    $prevYear = $month === 1 ? $year - 1 : $year;
+    $nextMonth = $month === 12 ? 1 : $month + 1;
+    $nextYear = $month === 12 ? $year + 1 : $year;
 
-$firstDayOfWeek = Carbon::create($year, $month, 1)->dayOfWeek;
-$offset = $firstDayOfWeek === 0 ? 6 : $firstDayOfWeek - 1;
-$daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-$todayKey = now()->format('Y-m-d');
+    $firstDayOfWeek = Carbon::create($year, $month, 1)->dayOfWeek;
+    $offset = $firstDayOfWeek === 0 ? 6 : $firstDayOfWeek - 1;
+    $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+    $todayKey = now()->format('Y-m-d');
 @endphp
 <x-layout>
 
@@ -36,45 +36,74 @@ $todayKey = now()->format('Y-m-d');
 
             <!--  Day headers  -->
             @foreach (['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] as $dayName)
-            <div class="text-center text-xs font-medium text-gray-400 uppercase tracking-wide pb-2">
-                {{ $dayName }}
-            </div>
+                <div class="text-center text-xs font-medium text-gray-400 uppercase tracking-wide pb-2">
+                    {{ $dayName }}
+                </div>
             @endforeach
 
             <!-- Offset empty cells  -->
             @for ($i = 0; $i < $offset; $i++)
                 <div>
-        </div>
-        @endfor
+                </div>
+            @endfor
 
-        <!-- Day cells -->
-        @for ($day = 1; $day <= $daysInMonth; $day++)
-            @php
-            $dateKey=sprintf('%04d-%02d-%02d', $year, $month, $day);
-            $entry=$calendarDays[$dateKey] ?? null;
-            $mood=$entry?->mood;
-            $isToday = $dateKey === $todayKey;
-            $icon = $mood ? Storage::url($mood->mood_icon) : Storage::url('moods/emptyDay.png');
-            $alt = $mood ? $mood->mood_label : 'empty day';
-            $isFuture = Carbon::parse($dateKey)->isFuture();
-            @endphp
+            <!-- Day cells -->
+            @for ($day = 1; $day <= $daysInMonth; $day++)
+                @php
+                    $dateKey = sprintf('%04d-%02d-%02d', $year, $month, $day);
+                    $entry = $calendarDays[$dateKey] ?? null;
+                    $mood = $entry?->mood;
+                    $isToday = $dateKey === $todayKey;
+                    $icon = $mood ? Storage::url($mood->mood_icon) : Storage::url('moods/emptyDay.png');
+                    $alt = $mood ? $mood->mood_label : 'empty day';
+                    $isFuture = Carbon::parse($dateKey)->isFuture();
+                @endphp
 
-            <div class="calendar-day">
-                @if (!$isFuture)
-                <div class="calendar-day cursor-pointer day-image rounded-full overflow-hidden {{ $isFuture ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer' }} {{ $isToday ? 'ring-colour' : '' }}"
-                    onclick="openModal('{{ $dateKey }}', '{{ Carbon::parse($dateKey)->format('d F Y') }}')">
-                    <img class="" src="{{ $icon }}" alt="{{ $alt }}">
+                <div class="calendar-day">
+                    @if ($isFuture)
+                        <div class="rounded-full overflow-hidden opacity-40 cursor-not-allowed">
+                            <img src="{{ $icon }}" alt="{{ $alt }}">
+                        </div>
+                    @elseif ($mood)
+                        <a href="{{ route('mood.show', ['date' => $dateKey]) }}"
+                            class="rounded-full overflow-hidden {{ $isToday ? 'ring-rainbow' : '' }} block">
+                            <img src="{{ $icon }}" alt="{{ $alt }}">
+                        </a>
                     @else
-                    <div class="calendar-day opacity-40 cursor-not-allowed">
-                        <img class="" src="{{ $icon }}" alt="{{ $alt }}">
-                        @endif
-                    </div>
+                        <div class="rounded-full overflow-hidden cursor-pointer {{ $isToday ? 'ring-rainbow' : '' }}"
+                            onclick="openModal('{{ $dateKey }}', '{{ Carbon::parse($dateKey)->format('d F Y') }}')">
+                            <img src="{{ $icon }}" alt="{{ $alt }}">
+                        </div>
+                    @endif
+
                     <p class="text-center text-xs text-gray-400">{{ $day }}</p>
                 </div>
-                @endfor
+            @endfor
 
-            </div>
+        </div>
     </div>
+
+    @if ($todayEntry)
+        <div class=" border-colour-gradient p-5 m-5">
+            <div class="flex items-center gap-2 mb-1">
+                <img src="{{ Storage::url($todayEntry->mood->mood_icon) }}" alt="{{ $todayEntry->mood->mood_label }}"
+                    class="w-5 h-5 rounded-full">
+                <p class="text-xs text-gray-400">Today's reflection</p>
+            </div>
+            <p class="text-white text-sm leading-relaxed">{{ $todayEntry->calendar_day_ai_summary_text }}</p>
+        </div>
+    @else
+        <div class=" border-colour-gradient p-5 m-5">
+            <p class="text-gray-400 text-sm text-center">Log today's mood to get your daily reflection</p>
+        </div>
+    @endif
+
+
+
+
+
+
+
 
     <div id="mood-modal" class="flex hidden fixed inset-0 bg-black/60 z-50  items-center justify-center">
         <div class="border-colour-gradient p-6 w-80 relative">
@@ -89,11 +118,11 @@ $todayKey = now()->format('Y-m-d');
 
                 <div class="grid grid-cols-5 gap-3 mb-6">
                     @foreach ($moods as $mood)
-                    <label class="flex flex-col items-center cursor-pointer">
-                        <input type="radio" name="mood_id" value="{{ $mood->id }}" class="hidden peer">
-                        <img src="{{ Storage::url($mood->mood_icon) }}" alt="{{ $mood->mood_label }}"
-                            class="w-12 h-12 rounded-full peer-checked:ring-2 peer-checked:ring-blue-400">
-                    </label>
+                        <label class="flex flex-col items-center cursor-pointer">
+                            <input type="radio" name="mood_id" value="{{ $mood->id }}" class="hidden peer">
+                            <img src="{{ Storage::url($mood->mood_icon) }}" alt="{{ $mood->mood_label }}"
+                                class="w-12 h-12 rounded-full peer-checked:ring-2 peer-checked:ring-blue-400">
+                        </label>
                     @endforeach
                 </div>
 
@@ -103,6 +132,15 @@ $todayKey = now()->format('Y-m-d');
             </form>
         </div>
     </div>
+
+
+
+
+
+
+
+
+
     <div class="footer w-full h-15 border-footer fixed flex items-center justify-center inset-x-0 bottom-0">
         <button onclick="openModal('{{ now()->format('Y-m-d') }}', 'Today')"
             class="flex items-center justify-center w-25 h-25 -translate-y-6 rounded-full bottom-10 text-white text-3xl border-colour">
