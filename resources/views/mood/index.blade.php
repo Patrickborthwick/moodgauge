@@ -17,8 +17,8 @@
         <!-- Navigation -->
         <div class="flex items-center justify-between mb-6">
             <a href="{{ route('mood.index', ['month' => $prevMonth, 'year' => $prevYear]) }}"
-                class="px-4 py-2 text-sm text-gray-200 border border-gray-200 rounded-lg hover:bg-gray-50">
-                &larr; Previous
+                class="px-4 py-2 text-sm text-gray-200 border border-gray-400 rounded-lg hover:bg-gray-50">
+                &larr; 
             </a>
 
             <h2 class="text-lg font-medium text-gray-200">
@@ -26,8 +26,8 @@
             </h2>
 
             <a href="{{ route('mood.index', ['month' => $nextMonth, 'year' => $nextYear]) }}"
-                class="px-4 py-2 text-sm text-gray-200 border border-gray-200 rounded-lg hover:bg-gray-50">
-                Next &rarr;
+                class="px-4 py-2 text-sm text-gray-200 border border-gray-400 rounded-lg hover:bg-gray-50">
+                 &rarr;
             </a>
         </div>
 
