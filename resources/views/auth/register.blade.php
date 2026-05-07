@@ -62,7 +62,6 @@
                         <p>Already have an account? Login here</p>
                     </div>
                 </a>
-
             </div>
         </form>
     </div>
