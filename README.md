@@ -40,7 +40,7 @@ php artisan key:generate
 php artisan migrate --seed
 ```
 
-This will create the database tables and seed the mood options.
+This will create the database tables and seed the moods.
 
 ### 6. Create the storage link
 
@@ -50,28 +50,8 @@ php artisan storage:link
 
 This makes uploaded mood icons publicly accessible.
 
-### 7. Build frontend assets
-
-```bash
-npm run build
-```
-
-Or for development with hot reload:
+### 7. Build frontend 
 
 ```bash
 npm run dev
 ```
-
-### 9. Serve the application
-
-```bash
-php artisan serve
-```
-
-The application will be available at `http://localhost:8000`.
-
-## Notes
-
-- Mood icon images are stored in `storage/app/public/moods/`
-- The AI summary is generated using Anthropic's Claude API on mood submission
-- An Anthropic API key is required for AI summaries to function — without it moods can still be logged but no summary will be generated
